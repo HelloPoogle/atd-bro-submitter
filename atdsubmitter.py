@@ -506,9 +506,6 @@ def File_Upload(matdip, sesuser_enc, file_name, analyzer_profile_id, BroVersion,
     isHashFound = obj_hash.searchHash(md5value)
     if isHashFound == True:
         logger.info("Skipping re-analysis of sample [%s]." % (file_name))
-    else:
-        obj_hash.update_hash(md5value)
-        logger.info("Hash [%s] for sample [%s] is updated." % (md5value, file_name))
 
     if os.path.exists(PRINT_HASH_FLAG):
         logger.info("Printing hash table.")
@@ -666,6 +663,10 @@ def File_Upload(matdip, sesuser_enc, file_name, analyzer_profile_id, BroVersion,
     SAMPLE_SUBMISSION_FLAG = True
 
     logger.info("File's submitted : %d " % (file_counter))
+
+    if isHashFound == False:
+        obj_hash.update_hash(md5value)
+        logger.info("Hash [%s] for sample [%s] is updated." % (md5value, file_name))
 
     File_MD5 = md5Checksum(file_name)
 
